@@ -1,0 +1,8 @@
+/home/tiago/code/git/camel/src/main/java/org/acme/camel/dtos/WeatherDto.java
+/home/tiago/code/git/camel/src/main/java/org/acme/camel/beans/InstantBean.java
+/home/tiago/code/git/camel/src/main/java/org/acme/camel/utils/SimpleUtils.java
+/home/tiago/code/git/camel/src/main/java/org/acme/camel/dtos/HourlyUnitsDto.java
+/home/tiago/code/git/camel/src/main/java/org/acme/camel/dtos/HourlyDto.java
+/home/tiago/code/git/camel/src/main/java/org/acme/camel/routes/StandardWeatherRoute.java
+/home/tiago/code/git/camel/src/main/java/org/acme/camel/beans/WeatherBean.java
+/home/tiago/code/git/camel/src/main/java/org/acme/camel/MyApplication.java

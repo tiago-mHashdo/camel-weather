@@ -1,0 +1,11 @@
+org/acme/camel/dtos/HourlyDto$HourlyDtoBuilder.class
+org/acme/camel/dtos/WeatherDto.class
+org/acme/camel/beans/InstantBean.class
+org/acme/camel/dtos/HourlyUnitsDto.class
+org/acme/camel/routes/StandardWeatherRoute.class
+org/acme/camel/utils/SimpleUtils.class
+org/acme/camel/beans/WeatherBean.class
+org/acme/camel/dtos/HourlyUnitsDto$HourlyUnitsDtoBuilder.class
+org/acme/camel/dtos/HourlyDto.class
+org/acme/camel/MyApplication.class
+org/acme/camel/dtos/WeatherDto$WeatherDtoBuilder.class
