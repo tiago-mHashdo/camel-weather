@@ -105,7 +105,6 @@ public class StandardWeatherRoute extends RouteBuilder {
                 .log(LoggingLevel.DEBUG, ENDED_ROUTE_LOG + GET_WEATHER_FORECAST_ROUTE);
     }
 
-
     /**
      * Validates the origin and destination locations by checking if they meet the required format
      * before storing them as exchange properties.
