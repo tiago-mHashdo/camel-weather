@@ -12,6 +12,7 @@ public class GeneralConstants {
     public static final String DESTINATION_LATITUDE_PROPERTY = "destinationLatitudeProperty";
     public static final String DESTINATION_LONGITUDE_PROPERTY = "destinationLongitudeProperty";
     public static final String TEMPERATURE_PROPERTY = "temperatureProperty";
+    public static final String EXCHANGE_MESSAGE_PROPERTY = "exchangeMessageProperty";
 
     // Exchange properties
     public static final String ORIGIN_EXCHANGE_PROPERTY = AppUtils.getExchangeProperty(ORIGIN_PROPERTY);
@@ -21,6 +22,7 @@ public class GeneralConstants {
     public static final String DESTINATION_LATITUDE_EXCHANGE_PROPERTY = AppUtils.getExchangeProperty(DESTINATION_LATITUDE_PROPERTY);
     public static final String DESTINATION_LONGITUDE_EXCHANGE_PROPERTY = AppUtils.getExchangeProperty(DESTINATION_LONGITUDE_PROPERTY);
     public static final String TEMPERATURE_EXCHANGE_PROPERTY = AppUtils.getExchangeProperty(TEMPERATURE_PROPERTY);
+    public static final String EXCHANGE_MESSAGE_EXCHANGE_PROPERTY = AppUtils.getExchangeProperty(EXCHANGE_MESSAGE_PROPERTY);
 
     // Constants
     public static final String ORIGIN_CONST = "origin";
@@ -36,5 +38,13 @@ public class GeneralConstants {
     public static final String VALIDATE_LOCATIONS_ROUTE_ID = "validateLocationsRoute";
     public static final String GET_WEATHER_FORECAST_ROUTE = "getWeatherForecastRoute";
     public static final String GET_TRAVEL_DURATION_AND_COORDINATES_ROUTE = "getTravelDurationAndCoordinatesRoute";
+    public static final String MAIN_ROUTE = "standardRestRoute";
+
+    // Others
+    public static final String ENDED_ROUTE_LOG = "|- Ended route:";
+    public static final String STARTED_ROUTE_LOG = "|- Started route: ";
+    public static final String CAMEL_HTTP_HEADER_PATTERN = "CamelHttp*";
+
+
 
 }
