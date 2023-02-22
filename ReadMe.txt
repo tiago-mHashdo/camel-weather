@@ -17,7 +17,7 @@ To build this project use
 
 === How to run
 
-You can run this example using
+You can run this using
 
     mvn camel:run
 

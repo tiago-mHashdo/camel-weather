@@ -2,6 +2,7 @@ package org.acme.camel.routes;
 
 import org.acme.camel.beans.InstantBean;
 import org.acme.camel.beans.WeatherBean;
+import org.acme.camel.constants.GeneralConstants;
 import org.acme.camel.dtos.WeatherDto;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
@@ -16,7 +17,7 @@ import static org.apache.camel.support.builder.PredicateBuilder.and;
 public class StandardWeatherRoute extends RouteBuilder {
 
     @Override
-    public void configure() throws Exception {
+    public void configure() {
         onException(Exception.class)
                 .handled(true)
                 .setBody(simple("Error: ${exception.message}"))
@@ -28,8 +29,15 @@ public class StandardWeatherRoute extends RouteBuilder {
         validateLocationsEndpoint();
     }
 
+    /**
+     * Defines the main Camel route for retrieving weather information, which accepts a GET request
+     * at the endpoint /weather. This route validates the origin and destination locations, retrieves
+     * the travel duration and coordinates using the Google Maps API, retrieves the weather forecast
+     * at the destination using the Open-Meteo API, and constructs a message with the arrival time and
+     * temperature to return to the user.
+     */
     private void mainRoute() {
-        from("jetty:http://localhost:8080/weather?httpMethodRestrict=GET")
+        from("jetty:{{weather.server.host}}:{{weather.server.port}}/weather?httpMethodRestrict=GET")
                 .routeId(MAIN_ROUTE)
                 .log(LoggingLevel.DEBUG, STARTED_ROUTE_LOG + MAIN_ROUTE)
                 .to(direct(VALIDATE_LOCATIONS_ENDPOINT))
@@ -46,12 +54,20 @@ public class StandardWeatherRoute extends RouteBuilder {
                 .log(LoggingLevel.DEBUG, ENDED_ROUTE_LOG + MAIN_ROUTE);
     }
 
+    /**
+     * Route that validates that the googleMaps.apiKey is not null, nor empty, nor the default value and afterwards
+     * retrieves the travel duration {@link GeneralConstants#TRAVEL_DURATION_PROPERTY}and
+     * destination latitude {@link GeneralConstants#DESTINATION_LATITUDE_PROPERTY} and
+     * destination longitude {@link GeneralConstants#DESTINATION_LONGITUDE_PROPERTY} from the
+     * Google Maps API.
+     */
     private void getTravelDurationAndCoordinates() {
         from(direct(GET_TRAVEL_DURATION_AND_COORDINATES_ENDPOINT))
                 .routeId(GET_TRAVEL_DURATION_AND_COORDINATES_ROUTE)
                 .log(LoggingLevel.DEBUG, STARTED_ROUTE_LOG + GET_TRAVEL_DURATION_AND_COORDINATES_ROUTE)
                 .validate(and(simple("{{googleMaps.apiKey}}").isNotNull(),
-                        simple("{{googleMaps.apiKey}}").isNotEqualTo("")))
+                        simple("{{googleMaps.apiKey}}").isNotEqualTo(""),
+                        simple("{{googleMaps.apiKey}}").isNotEqualTo("myKey")))
                 .setHeader(Exchange.HTTP_METHOD, constant(HttpMethods.GET))
                 .setHeader(Exchange.HTTP_PATH, constant("/maps/api/directions/json"))
                 .setHeader(Exchange.HTTP_QUERY, simple("origin=" + ORIGIN_EXCHANGE_PROPERTY +
@@ -66,6 +82,13 @@ public class StandardWeatherRoute extends RouteBuilder {
                 .log(LoggingLevel.DEBUG, ENDED_ROUTE_LOG + GET_TRAVEL_DURATION_AND_COORDINATES_ROUTE);
     }
 
+    /**
+     * Route that retrieves the weather forecast from Open Meteo API for the destination coordinates
+     * stored in the {@link GeneralConstants#DESTINATION_LATITUDE_PROPERTY} and
+     * {@link GeneralConstants#DESTINATION_LONGITUDE_PROPERTY} exchange properties.
+     * The retrieved temperature value in Celsius degrees is stored in the
+     * {@link GeneralConstants#TEMPERATURE_PROPERTY} exchange property.
+     */
     private void getWeatherForecast() {
         from(direct(GET_WEATHER_FORECAST_ENDPOINT))
                 .routeId(GET_WEATHER_FORECAST_ROUTE)
@@ -82,6 +105,11 @@ public class StandardWeatherRoute extends RouteBuilder {
                 .log(LoggingLevel.DEBUG, ENDED_ROUTE_LOG + GET_WEATHER_FORECAST_ROUTE);
     }
 
+
+    /**
+     * Validates the origin and destination locations by checking if they meet the required format
+     * before storing them as exchange properties.
+     */
     private void validateLocationsEndpoint() {
         from(direct(VALIDATE_LOCATIONS_ENDPOINT))
                 .routeId(VALIDATE_LOCATIONS_ROUTE_ID)
