@@ -4,7 +4,7 @@ import org.acme.camel.dtos.WeatherDto;
 import org.apache.camel.Body;
 import org.apache.camel.ExchangeProperty;
 
-import static org.acme.camel.routes.StandardWeatherRoute.ARRIVAL_INSTANT_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.ARRIVAL_INSTANT_PROPERTY;
 
 public class WeatherBean {
 

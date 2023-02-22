@@ -9,8 +9,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-import static org.acme.camel.routes.StandardWeatherRoute.TRAVEL_DURATION_PROPERTY;
-
+import static org.acme.camel.constants.GeneralConstants.TRAVEL_DURATION_PROPERTY;
 
 public class InstantBean {
 
