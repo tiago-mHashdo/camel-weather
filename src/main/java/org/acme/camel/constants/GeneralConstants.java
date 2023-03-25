@@ -24,9 +24,11 @@ public class GeneralConstants {
     public static final String TEMPERATURE_EXCHANGE_PROPERTY = AppUtils.getExchangeProperty(TEMPERATURE_PROPERTY);
     public static final String EXCHANGE_MESSAGE_EXCHANGE_PROPERTY = AppUtils.getExchangeProperty(EXCHANGE_MESSAGE_PROPERTY);
 
+    // Headers
+    public static final String ORIGIN_HEADER = "origin";
+    public static final String DESTINATION_HEADER = "destination";
+
     // Constants
-    public static final String ORIGIN_CONST = "origin";
-    public static final String DESTINATION_CONST = "destination";
     public static final String BRIDGE_ENDPOINT_TRUE_CONST = "?bridgeEndpoint=true";
 
     // Endpoints
@@ -44,6 +46,7 @@ public class GeneralConstants {
     public static final String ENDED_ROUTE_LOG = "|- Ended route:";
     public static final String STARTED_ROUTE_LOG = "|- Started route: ";
     public static final String CAMEL_HTTP_HEADER_PATTERN = "CamelHttp*";
+    public static final String LOCATION_REGEX = "^([a-zA-Z0-9\\-\\s\\.',]+)$";
 
 
 

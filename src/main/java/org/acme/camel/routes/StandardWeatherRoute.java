@@ -10,7 +10,37 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.http.common.HttpMethods;
 import org.apache.camel.model.dataformat.JsonLibrary;
 
-import static org.acme.camel.constants.GeneralConstants.*;
+
+import static org.acme.camel.constants.GeneralConstants.ARRIVAL_INSTANT_EXCHANGE_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.ARRIVAL_INSTANT_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.BRIDGE_ENDPOINT_TRUE_CONST;
+import static org.acme.camel.constants.GeneralConstants.CAMEL_HTTP_HEADER_PATTERN;
+import static org.acme.camel.constants.GeneralConstants.DESTINATION_EXCHANGE_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.DESTINATION_HEADER;
+import static org.acme.camel.constants.GeneralConstants.DESTINATION_LATITUDE_EXCHANGE_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.DESTINATION_LATITUDE_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.DESTINATION_LONGITUDE_EXCHANGE_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.DESTINATION_LONGITUDE_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.DESTINATION_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.ENDED_ROUTE_LOG;
+import static org.acme.camel.constants.GeneralConstants.EXCHANGE_MESSAGE_EXCHANGE_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.EXCHANGE_MESSAGE_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.GET_TRAVEL_DURATION_AND_COORDINATES_ENDPOINT;
+import static org.acme.camel.constants.GeneralConstants.GET_TRAVEL_DURATION_AND_COORDINATES_ROUTE;
+import static org.acme.camel.constants.GeneralConstants.GET_WEATHER_FORECAST_ENDPOINT;
+import static org.acme.camel.constants.GeneralConstants.GET_WEATHER_FORECAST_ROUTE;
+import static org.acme.camel.constants.GeneralConstants.LOCATION_REGEX;
+import static org.acme.camel.constants.GeneralConstants.MAIN_ROUTE;
+import static org.acme.camel.constants.GeneralConstants.ORIGIN_EXCHANGE_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.ORIGIN_HEADER;
+import static org.acme.camel.constants.GeneralConstants.ORIGIN_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.STARTED_ROUTE_LOG;
+import static org.acme.camel.constants.GeneralConstants.TEMPERATURE_EXCHANGE_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.TEMPERATURE_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.TRAVEL_DURATION_EXCHANGE_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.TRAVEL_DURATION_PROPERTY;
+import static org.acme.camel.constants.GeneralConstants.VALIDATE_LOCATIONS_ENDPOINT;
+import static org.acme.camel.constants.GeneralConstants.VALIDATE_LOCATIONS_ROUTE_ID;
 import static org.acme.camel.utils.AppUtils.direct;
 import static org.apache.camel.support.builder.PredicateBuilder.and;
 
@@ -106,17 +136,19 @@ public class StandardWeatherRoute extends RouteBuilder {
     }
 
     /**
-     * Validates the origin and destination locations by checking if they meet the required format
-     * before storing them as exchange properties.
+     * Route that validates the origin header {@link GeneralConstants#ORIGIN_HEADER} and
+     * destination header {@link GeneralConstants#DESTINATION_HEADER} by checking if they contain only letters
+     * (upper and lowercase), digits, spaces, dashes, apostrophes, periods,
+     * and commas before storing them as exchange properties.
      */
     private void validateLocationsEndpoint() {
         from(direct(VALIDATE_LOCATIONS_ENDPOINT))
                 .routeId(VALIDATE_LOCATIONS_ROUTE_ID)
                 .log(LoggingLevel.DEBUG, STARTED_ROUTE_LOG + VALIDATE_LOCATIONS_ROUTE_ID)
-                .validate(header(ORIGIN_CONST).regex("^([a-zA-Z0-9\\-\\s\\.',]+)$"))
-                .validate(header(DESTINATION_CONST).regex("^([a-zA-Z0-9\\-\\s\\.',]+)$"))
-                .setProperty(ORIGIN_PROPERTY, header(ORIGIN_CONST))
-                .setProperty(DESTINATION_PROPERTY, header(DESTINATION_CONST))
+                .validate(header(ORIGIN_HEADER).regex(LOCATION_REGEX))
+                .validate(header(DESTINATION_HEADER).regex(LOCATION_REGEX))
+                .setProperty(ORIGIN_PROPERTY, header(ORIGIN_HEADER))
+                .setProperty(DESTINATION_PROPERTY, header(DESTINATION_HEADER))
                 .log(LoggingLevel.DEBUG, ENDED_ROUTE_LOG + VALIDATE_LOCATIONS_ROUTE_ID);
     }
 }
